@@ -216,7 +216,11 @@ let formatStickyPost: {
                           <div class='timeline-content-wrapper'>
                             <p class='timeline-right-item-tip'>
                               {`${month} ${year}`}
-                              <sup>{formatPost[year]?.[month]?.length}</sup>
+                              <sup>
+                                {(formatPost[year]?.[month]?.length || 0) +
+                                  (formatStickyPost[year]?.[month]?.length ||
+                                    0)}
+                              </sup>
                             </p>
                             {[
                               ...(formatStickyPost?.[year]?.[month]?.sort?.(
