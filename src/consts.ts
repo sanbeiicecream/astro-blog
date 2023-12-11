@@ -3,3 +3,6 @@
 
 export const SITE_TITLE = 'Astro Blog';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const ARCHIVE_TITLE = 'timeline⏱️'
+export const BASE_URL = '/'
+export const COPYRIGHT = 'Your name here'

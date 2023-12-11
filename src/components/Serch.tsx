@@ -2,6 +2,7 @@ import Styles from '../styles/search.module.scss';
 import { useState, type SyntheticEvent, useEffect } from 'react';
 import { getCollection } from 'astro:content';
 import { createPortal } from 'react-dom';
+import { formatUrl } from '../utils/common';
 
 const allBlogPosts = await getCollection('blog');
 
@@ -12,7 +13,6 @@ export function Search() {
   const [popupContainer, setPopupContainer] = useState<HTMLElement>();
 
   useEffect(() => {
-    // window.document.body.classList.remove('search-active');
     setPopupContainer(window.document.body);
   }, []);
   const changeInput = (ele: SyntheticEvent) => {
@@ -24,7 +24,7 @@ export function Search() {
     const findPost = allBlogPosts
       ?.filter?.(item => item.body.includes(value))
       .map(item => ({
-        url: `/${item.collection}/${item.id.split('.md')[0]}/`,
+        url: formatUrl(item),
         title: item.data.title,
         id: item.id,
       }));

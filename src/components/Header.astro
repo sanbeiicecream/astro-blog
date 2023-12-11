@@ -12,6 +12,7 @@ import { Search } from './Serch';
     <div class='social-links'>
       <!-- <HeaderLink href='/'>Home</HeaderLink> -->
       <HeaderLink href='/blog'>Blog</HeaderLink>
+      <HeaderLink href='/archive'>Archive</HeaderLink>
       <HeaderLink href='/about'>About</HeaderLink>
       <Search client:load />
       <a href='https://github.com/withastro/astro' target='_blank'>
@@ -56,7 +57,7 @@ import { Search } from './Serch';
   }
   nav a.active {
     text-decoration: none;
-    border-bottom-color: var(--accent);
+    border-bottom-color: var(--theme1-color1);
   }
   .social-links,
   .social-links a {
