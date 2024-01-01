@@ -51,8 +51,7 @@ let formatStickyPost: {
       body {
         margin: 0 auto;
         box-sizing: border-box;
-        font-size: initial;
-        font-size: 20px;
+        font-size: var(--font-size);
       }
       .content-wrapper {
         max-width: 68%;
@@ -96,7 +95,7 @@ let formatStickyPost: {
             background-color: $color-3;
           }
 
-          .timeline-right-item-tip {
+          .timeline-right-item-top-tip {
             box-shadow: inset 40em 0 0 0 $color-3;
           }
         }
@@ -120,39 +119,42 @@ let formatStickyPost: {
           font-weight: 700;
         }
 
-        .timeline-right-item-content {
+        .timeline-right-item {
           position: relative;
-          padding: 1em 0;
-          margin-bottom: 1em;
-          transition: background-color 0.2s ease-in;
+          > .timeline-right-item-content {
+            position: relative;
+            padding: 1em 0;
+            margin-bottom: 1em;
+            transition: background-color 0.2s ease-in;
 
+            > span {
+              display: flex;
+              align-items: center;
+            }
+            &:hover {
+              background-color: var(--theme1-color4);
+            }
+            > h4 {
+              margin: 0;
+            }
+            > p {
+              margin: 0;
+            }
+            a {
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+            }
+          }
           > .sticky-svg {
             position: absolute;
+            top: 0;
             right: -1.5em;
             height: 1.5em;
             width: 1.5em;
             z-index: 3;
-          }
-
-          > span {
-            display: flex;
-            align-items: center;
-          }
-          &:hover {
-            background-color: var(--theme1-color4);
-          }
-          > h4 {
-            margin: 0;
-          }
-          > p {
-            margin: 0;
-          }
-          a {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
           }
         }
       }
@@ -171,7 +173,7 @@ let formatStickyPost: {
         height: 1em;
       }
 
-      .timeline-right-item-tip {
+      .timeline-right-item-top-tip {
         $--padding-l-r: 0.2em;
         display: inline-block;
         min-width: 4em;
@@ -184,7 +186,7 @@ let formatStickyPost: {
         color: $color-2;
         background-color: $color-1;
         box-shadow: inset 0 0 0 0em var(--theme1-color3);
-        sup {
+        .post-count {
           top: -0.5em;
           right: $--padding-l-r;
           position: absolute;
@@ -214,13 +216,13 @@ let formatStickyPost: {
                         <li class='timeline-wrapper'>
                           <label class='timeline-left-icon' />
                           <div class='timeline-content-wrapper'>
-                            <p class='timeline-right-item-tip'>
+                            <p class='timeline-right-item-top-tip'>
                               {`${month} ${year}`}
-                              <sup>
+                              <span class='post-count'>
                                 {(formatPost[year]?.[month]?.length || 0) +
                                   (formatStickyPost[year]?.[month]?.length ||
                                     0)}
-                              </sup>
+                              </span>
                             </p>
                             {[
                               ...(formatStickyPost?.[year]?.[month]?.sort?.(
@@ -231,7 +233,30 @@ let formatStickyPost: {
                               ...(formatPost?.[year]?.[month] || []),
                             ]?.map(item => {
                               return (
-                                <div class='timeline-right-item-content'>
+                                <div class='timeline-right-item'>
+                                  <div class='timeline-right-item-content'>
+                                    <h4>{item.data.title}</h4>
+                                    <p>{item.data.description}</p>
+                                    <>
+                                      {`${dayjs(item.data.pubDate).format(
+                                        'YYYY年MM月D日'
+                                      )} | ${Math.ceil(
+                                        Math.ceil(
+                                          getWordCount(item.body) / (5 * 60)
+                                        )
+                                      )}分钟 | ${getWordCount(item.body)}字${
+                                        item.data.updatedDate
+                                          ? ` | ${dayjs(
+                                              item.data.updatedDate
+                                            ).format('YYYY-MM-DD')}更新`
+                                          : ''
+                                      }`}
+                                    </>
+                                    <a
+                                      href={formatUrl(item)}
+                                      aria-label={item.data.description}
+                                    />
+                                  </div>
                                   {typeof item?.data?.sticky === 'number' && (
                                     <svg
                                       class='sticky-svg'
@@ -249,24 +274,6 @@ let formatStickyPost: {
                                       />
                                     </svg>
                                   )}
-                                  <h4>{item.data.title}</h4>
-                                  <p>{item.data.description}</p>
-                                  <>
-                                    {`${dayjs(item.data.pubDate).format(
-                                      'YYYY年MM月D日'
-                                    )} | ${Math.ceil(
-                                      Math.ceil(
-                                        getWordCount(item.body) / (5 * 60)
-                                      )
-                                    )}分钟 | ${getWordCount(item.body)}字${
-                                      item.data.updatedDate
-                                        ? ` | ${dayjs(
-                                            item.data.updatedDate
-                                          ).format('YYYY-MM-DD')}更新`
-                                        : ''
-                                    }`}
-                                  </>
-                                  <a href={formatUrl(item)} />
                                 </div>
                               );
                             })}

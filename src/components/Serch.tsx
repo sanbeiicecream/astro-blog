@@ -42,10 +42,7 @@ export function Search() {
 
   return (
     <>
-      <span
-        onClick={clickSearch}
-        style={{ padding: '20px 10px', cursor: 'pointer' }}
-      >
+      <span onClick={clickSearch} className={Styles['search-title']}>
         Search
       </span>
       {popupContainer &&

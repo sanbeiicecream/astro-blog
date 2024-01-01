@@ -4,58 +4,84 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import { type TocList } from '../types/common';
+import Toc from './Toc.astro';
+// import About from '../pages/about2';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = Partial<CollectionEntry<'blog'>['data']> & {
+  tocList?: TocList;
+  slug?: string;
+  collection?: string;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tocList } =
+  Astro.props;
+const message = 'Astro is awesome!';
 ---
 
-<html lang='en'>
+<script define:vars={{ message }}>
+  console.log('🚀 ~ file: BlogPost.astro:31 ~ message:', message);
+  // alert(message);
+</script>
+<html lang='zh'>
   <head>
-    <BaseHead title={title} description={description} />
-    <style>
-      main {
-        width: calc(100% - 2em);
-        max-width: 100%;
+    <BaseHead title={title || ''} description={description || ''} />
+    <style lang='scss'>
+      body {
+        box-sizing: border-box;
+        padding: 0;
         margin: 0;
+        font-size: var(--font-size);
+        position: relative;
+      }
+      main {
+        position: relative;
+        min-height: calc(100vh - var(--header-height) - var(--footer-height));
+        max-width: calc(var(--main-width) + var(--gap) * 2);
+        margin: auto;
+        padding: var(--gap);
       }
       .hero-image {
         width: 100%;
+        img {
+          display: block;
+          margin: 0 auto;
+          border-radius: 12px;
+          box-shadow: var(--box-shadow);
+        }
       }
-      .hero-image img {
-        display: block;
-        margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
-      }
-      .prose {
-        width: 720px;
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
-      }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
-      }
-      .title h1 {
-        margin: 0 0 0.5em 0;
-      }
-      .date {
-        margin-bottom: 0.5em;
-        color: rgb(var(--gray));
-      }
-      .last-updated-on {
-        font-style: italic;
+      article {
+        .prose {
+          position: relative;
+          width: 720px;
+          max-width: calc(100% - 2em);
+          margin: auto;
+          padding: 1em;
+          color: rgb(var(--gray-dark));
+          .title {
+            margin-bottom: 1em;
+            padding: 1em 0;
+            text-align: center;
+            line-height: 1;
+            h1 {
+              margin: 0 0 0.5em 0;
+            }
+          }
+
+          .date {
+            margin-bottom: 0.5em;
+            color: rgb(var(--gray));
+            .last-updated-on {
+              font-style: italic;
+            }
+          }
+        }
       }
     </style>
   </head>
-
   <body>
     <Header />
+    <Toc navList={tocList} />
     <main>
       <article>
         <div class='hero-image'>
@@ -68,7 +94,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         <div class='prose'>
           <div class='title'>
             <div class='date'>
-              <FormattedDate date={pubDate} />
+              {pubDate && <FormattedDate date={pubDate} />}
               {
                 updatedDate && (
                   <div class='last-updated-on'>

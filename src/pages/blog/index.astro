@@ -3,19 +3,27 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
-
-const posts = (await getCollection('blog')).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
+const stickPost: CollectionEntry<'blog'>[] = [];
+const otherPost: CollectionEntry<'blog'>[] = [];
+(await getCollection('blog')).forEach(item => {
+  if (typeof item.data.sticky === 'number') {
+    stickPost.push(item);
+  } else {
+    otherPost.push(item);
+  }
+});
+stickPost.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+otherPost.sort((a, b) => (a.data?.sticky || 0) - (b.data?.sticky || 0));
+const posts = [...stickPost, ...otherPost];
 ---
 
 <!doctype html>
 <html lang='zh'>
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style>
+    <style lang='scss'>
       main {
         width: 960px;
       }
@@ -26,32 +34,46 @@ const posts = (await getCollection('blog')).sort(
         list-style-type: none;
         margin: 0;
         padding: 0;
+        li {
+          width: calc(50% - 1rem);
+          * {
+            text-decoration: none;
+            transition: 0.2s ease;
+          }
+          img {
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+          }
+          a {
+            display: block;
+            &:hover {
+              h4,
+              .date {
+                color: rgb(var(--theme1-color1));
+              }
+              img {
+                box-shadow: var(--box-shadow);
+              }
+
+              .sticky-svg {
+                > path {
+                  fill: var(--theme1-color1);
+                }
+              }
+            }
+          }
+        }
       }
-      ul li {
-        width: calc(50% - 1rem);
+
+      .sticky-svg {
+        font-size: 16px;
+        height: 1.5em;
+        width: 1.5em;
+        > path {
+          fill: #000;
+        }
       }
-      ul li * {
-        text-decoration: none;
-        transition: 0.2s ease;
-      }
-      ul li:first-child {
-        width: 100%;
-        margin-bottom: 1rem;
-        text-align: center;
-      }
-      ul li:first-child img {
-        width: 100%;
-      }
-      ul li:first-child .title {
-        font-size: 2.369rem;
-      }
-      ul li img {
-        margin-bottom: 0.5rem;
-        border-radius: 12px;
-      }
-      ul li a {
-        display: block;
-      }
+
       .title {
         margin: 0;
         color: rgb(var(--black));
@@ -60,13 +82,6 @@ const posts = (await getCollection('blog')).sort(
       .date {
         margin: 0;
         color: rgb(var(--gray));
-      }
-      ul li a:hover h4,
-      ul li a:hover .date {
-        color: rgb(var(--theme1-color1));
-      }
-      ul a:hover img {
-        box-shadow: var(--box-shadow);
       }
       @media (max-width: 720px) {
         ul {
@@ -100,7 +115,25 @@ const posts = (await getCollection('blog')).sort(
                     src={post.data.heroImage}
                     alt=''
                   />
-                  <h4 class='title'>{post.data.title}</h4>
+                  <h4 class='title'>
+                    {post.data.title}
+                    {typeof post?.data?.sticky === 'number' && (
+                      <svg
+                        class='sticky-svg'
+                        viewBox='0 0 1024 1024'
+                        version='1.1'
+                        xmlns='http://www.w3.org/2000/svg'
+                        p-id='5556'
+                        width='16'
+                        height='16'
+                      >
+                        <path
+                          d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z'
+                          p-id='5557'
+                        />
+                      </svg>
+                    )}
+                  </h4>
                   <p class='date'>
                     <FormattedDate date={post.data.pubDate} />
                   </p>

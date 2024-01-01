@@ -1,5 +1,19 @@
 # Astro Starter Kit: Blog
 
+使用Astro创建的blog模板进行魔改样式，添加功能
+
+## TODO
+- [x] 搜索
+- [x] 时间线
+- [ ] blog侧边导航
+- [ ] blog内容优化
+- [ ] tag
+- [ ] 分页
+- [ ] 移动端适配
+
+
+---
+
 ```sh
 npm create astro@latest -- --template blog
 ```

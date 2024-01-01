@@ -1,0 +1,174 @@
+---
+import { type TocList } from '../types/common';
+type Props = Partial<{
+  navList: TocList | undefined;
+  slug: string | undefined;
+  collection: string | undefined;
+  summary: string | undefined;
+}>;
+const { navList, summary } = Astro.props;
+---
+
+{
+  !!navList?.length && (
+    <aside class='toc-wrapper wide'>
+      <div class='toc'>
+        <details>
+          <summary>{summary || '目录'}</summary>
+          <ul class='toc-link-wrapper'>
+            {navList
+              .map(navs =>
+                navs.map((item, index) => (
+                  <a
+                    href={`#${item.slug}`}
+                    class:list={[`toc-title-grade-${index + 1}`]}
+                    data-link={item.slug}
+                  >
+                    {item.text}
+                  </a>
+                ))
+              )
+              .flat(1)}
+          </ul>
+        </details>
+      </div>
+    </aside>
+  )
+}
+
+<style lang='scss'>
+  aside.toc-wrapper.wide {
+    position: absolute;
+    height: calc(100% - var(--header-height) - var(--footer-height));
+    left: calc(var(--gap) / 2);
+    top: var(--header-height);
+    left: 0;
+    width: calc(var(--toc-width) - var(--gap));
+    margin-left: 24px;
+
+    .toc {
+      position: sticky;
+      top: var(--gap);
+      border: unset;
+      background: unset;
+      border-radius: unset;
+      width: 100%;
+      margin: 0 2px 40px;
+
+      details {
+        max-width: var(--toc-width);
+        max-height: calc(100vh - var(--header-height));
+        border-radius: 4px;
+        background-color: transparent;
+        &[open] {
+          border-right: 1px solid var(--border);
+          summary {
+            border-bottom: 1px solid #aaa;
+            width: 100%;
+          }
+        }
+        summary {
+          font-weight: bold;
+          user-select: none;
+        }
+        .toc-link-wrapper {
+          height: calc(100vh - var(--header-height) - var(--footer-height));
+          max-width: var(--toc-width);
+          overflow: auto;
+          padding: 0.5em 0.2em;
+          margin: 0;
+          ul {
+            list-style: none;
+          }
+          a {
+            display: block;
+            font-size: 18px;
+            line-height: 1.3em;
+            text-decoration: none;
+            color: #000;
+            &:hover {
+              background-color: var(--theme1-color4);
+            }
+
+            &.active {
+              background-color: #7077a1;
+              color: #fff;
+            }
+          }
+          $base-margin-left: 0.8em;
+          @for $i from 1 through 6 {
+            .toc-title-grade-#{$i} {
+              margin-left: $i * $base-margin-left;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<script type='module'>
+  let tocLinkClickFlag = false;
+  function isElementBelowViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return rect.bottom > window.innerHeight;
+  }
+  window.onscroll = () => {
+    const tocLinkUL = document.querySelector('.toc-link-wrapper');
+    const headings = document.querySelectorAll(
+      'h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'
+    );
+    // toc项太多或者页面没有toc就移除滚动事件
+    if (!tocLinkUL || headings.length > 1000) {
+      window.onscroll = null;
+    }
+    if (tocLinkClickFlag) {
+      tocLinkClickFlag = false;
+      return;
+    }
+    let fromTop = window.scrollY;
+    let topHandingFlag = false;
+    let currentToc;
+    Array.from(headings)
+      .reverse()
+      .forEach((heading, index) => {
+        if (topHandingFlag) {
+          return;
+        }
+        const section = document.getElementById(heading.id);
+        if (section?.offsetTop && section?.offsetTop <= fromTop + 80) {
+          topHandingFlag = true;
+          document.querySelectorAll('.toc-link-wrapper a').forEach(link => {
+            link.classList.remove('active');
+          });
+          currentToc = document.querySelector(
+            `.toc-link-wrapper [data-link=${heading.id}]`
+          );
+          const tocLinkULHeight = tocLinkUL.getBoundingClientRect().height;
+          const tocLInkULScrollTop = tocLinkUL.scrollTop;
+          const currentTocTop = currentToc.offsetTop;
+          if (
+            currentTocTop > tocLinkULHeight + tocLInkULScrollTop ||
+            currentTocTop < tocLinkULHeight
+          ) {
+            tocLinkUL.scrollTop =
+              currentTocTop - tocLinkULHeight + tocLinkULHeight / 2;
+          }
+          currentToc?.classList.add('active');
+        }
+      });
+    topHandingFlag = true;
+  };
+  const tocLinkUL = document.querySelector('.toc-link-wrapper');
+  if (tocLinkUL) {
+    tocLinkUL.onclick = event => {
+      tocLinkClickFlag = true;
+      if (event.target instanceof HTMLElement) {
+        document.querySelectorAll('[data-link]')?.forEach?.(item => {
+          item?.classList?.remove('active');
+        });
+        event.target?.classList?.add?.('active');
+      }
+    };
+  }
+</script>

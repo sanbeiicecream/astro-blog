@@ -20,24 +20,49 @@
   --theme1-color4: #FFC7C7;
 }
 
+:root {
+  --gap: 24px;
+  --content-gap: 20px;
+  --nav-width: 1024px;
+  --main-width: 720px;
+  --header-height: 78px;
+  --footer-height: 38px;
+  --footer-padding: 1em;
+  --radius: 8px;
+  --theme: rgb(255, 255, 255);
+  --entry: rgb(255, 255, 255);
+  --primary: rgb(30, 30, 30);
+  --secondary: rgb(108, 108, 108);
+  --tertiary: rgb(214, 214, 214);
+  --content: rgb(31, 31, 31);
+  --hljs-bg: rgb(28, 29, 33);
+  --code-bg: rgb(245, 245, 245);
+  --border: rgb(238, 238, 238);
+  --nav-width: 1380px;
+  --font-size: 18px;
+  --article-width: 650px;
+  --toc-width: 300px;
+}
+
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-regular.woff') format('woff');
+  font-family: 'Ubuntu';
+  src: url('/fonts/Ubuntu-Regular.woff2') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Atkinson';
-  src: url('/fonts/atkinson-bold.woff') format('woff');
-  font-weight: 700;
+  font-family: 'Noto Sans SC';
+  src: url('/fonts/NotoSansSC-Medium.woff2') format('woff');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 body {
-  font-family: 'Atkinson', sans-serif;
+  /* font-family: 'Atkinson', sans-serif; */
+  font-family: 'Ubuntu', 'Noto Sans SC', sans-serif;
   margin: 0;
   padding: 0;
   text-align: left;
@@ -46,13 +71,13 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
-  font-size: 20px;
+  font-size: var(--font-size);
   line-height: 1.7;
   box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {

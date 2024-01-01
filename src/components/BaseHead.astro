@@ -2,6 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
+import '../styles/reset.css';
 
 interface Props {
   title: string;
@@ -22,7 +23,7 @@ import { ViewTransitions } from 'astro:transitions';
 <meta name='generator' content={Astro.generator} />
 
 <!-- Font preloads -->
-<link
+<!-- <link
   rel='preload'
   href='/fonts/atkinson-regular.woff'
   as='font'
@@ -34,6 +35,20 @@ import { ViewTransitions } from 'astro:transitions';
   href='/fonts/atkinson-bold.woff'
   as='font'
   type='font/woff'
+  crossorigin
+/> -->
+<link
+  rel='preload'
+  href='/fonts/Ubuntu-Regular.woff2'
+  as='font'
+  type='font/woff2'
+  crossorigin
+/>
+<link
+  rel='preload'
+  href='/fonts/NotoSansSC-Medium.woff2'
+  as='font'
+  type='font/woff2'
   crossorigin
 />
 
