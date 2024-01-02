@@ -30,7 +30,7 @@ import { Search } from './Serch';
     </div>
   </nav>
 </header>
-<style>
+<style lang='scss'>
   header {
     margin: 0;
     padding: 0 1em;
@@ -51,17 +51,18 @@ import { Search } from './Serch';
     display: flex;
     justify-content: space-between;
     align-items: center;
+    a {
+      padding: 1em 0.5em;
+      color: var(--black);
+      border-bottom: 4px solid transparent;
+      text-decoration: none;
+      &.active {
+        text-decoration: none;
+        border-bottom-color: var(--theme1-color1);
+      }
+    }
   }
-  nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
-  }
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--theme1-color1);
-  }
+
   .social-links,
   .social-links a {
     display: flex;

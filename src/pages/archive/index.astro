@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 
 import dayjs from 'dayjs';
-import { formatUrl, getWordCount } from '../../utils/common';
+import { formatUrl, getWordCount, baseUrl } from '../../utils/common.ts';
 let formatPost: {
   [year: string]: { [month: string]: CollectionEntry<'blog'>[] };
 } = {};
@@ -253,7 +253,7 @@ let formatStickyPost: {
                                       }`}
                                     </>
                                     <a
-                                      href={formatUrl(item)}
+                                      href={`${baseUrl}${formatUrl(item)}`}
                                       aria-label={item.data.description}
                                     />
                                   </div>

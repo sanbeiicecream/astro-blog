@@ -44,22 +44,6 @@
   --toc-width: 300px;
 }
 
-@font-face {
-  font-family: 'Ubuntu';
-  src: url('/fonts/Ubuntu-Regular.woff2') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans SC';
-  src: url('/fonts/NotoSansSC-Medium.woff2') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 body {
   /* font-family: 'Atkinson', sans-serif; */
   font-family: 'Ubuntu', 'Noto Sans SC', sans-serif;

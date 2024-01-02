@@ -15,6 +15,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 import { ViewTransitions } from 'astro:transitions';
 import { baseUrl } from '../utils/common.ts';
+
+const fontUrl1 = `${baseUrl}/fonts/Ubuntu-Regular.woff2`;
+const fontUrl2 = `${baseUrl}/fonts/NotoSansSC-Medium.woff2`;
 ---
 
 <!-- Global Metadata -->
@@ -39,14 +42,15 @@ import { baseUrl } from '../utils/common.ts';
   crossorigin
 /> -->
 <link
-  rel='preload'
+  rel='prefetch'
+  rel='prefetch'
   href={`${baseUrl}/fonts/Ubuntu-Regular.woff2`}
   as='font'
   type='font/woff2'
   crossorigin
 />
 <link
-  rel='preload'
+  rel='prefetch'
   href={`${baseUrl}/fonts/NotoSansSC-Medium.woff2`}
   as='font'
   type='font/woff2'
@@ -75,3 +79,21 @@ import { baseUrl } from '../utils/common.ts';
 <meta property='twitter:description' content={description} />
 <meta property='twitter:image' content={new URL(image, Astro.url)} />
 <ViewTransitions />
+
+<style define:vars={{ fontUrl1, fontUrl2 }}>
+  @font-face {
+    font-family: 'Ubuntu';
+    src: url(var(--fontUrl1)) format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Noto Sans SC';
+    src: url(var(--fontUrl2)) format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>

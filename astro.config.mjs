@@ -6,7 +6,7 @@ import node from "@astrojs/node";
 import react from "@astrojs/react";
 
 // https://astro.build/config
-export default defineConfig({
+export default ({
   prefetch: true,
   output: 'hybrid',
   site: 'https://example.com',
