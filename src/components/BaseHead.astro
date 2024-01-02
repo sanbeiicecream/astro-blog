@@ -15,10 +15,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 import { ViewTransitions } from 'astro:transitions';
 import { baseUrl } from '../utils/common.ts';
-
-const fontUrl1 = `${baseUrl}/fonts/Ubuntu-Regular.woff2`;
-const fontUrl2 = `${baseUrl}/fonts/NotoSansSC-Medium.woff2`;
+import CustomStyle from '../layouts/CustomStyle.astro';
 ---
+
+<CustomStyle />
 
 <!-- Global Metadata -->
 <meta charset='utf-8' />
@@ -79,21 +79,3 @@ const fontUrl2 = `${baseUrl}/fonts/NotoSansSC-Medium.woff2`;
 <meta property='twitter:description' content={description} />
 <meta property='twitter:image' content={new URL(image, Astro.url)} />
 <ViewTransitions />
-
-<style define:vars={{ fontUrl1, fontUrl2 }}>
-  @font-face {
-    font-family: 'Ubuntu';
-    src: url(var(--fontUrl1)) format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Noto Sans SC';
-    src: url(var(--fontUrl2)) format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-</style>

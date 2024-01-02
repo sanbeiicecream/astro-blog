@@ -1,0 +1,29 @@
+---
+import { baseUrl } from '../utils/common.ts';
+const fontUrl1 = `${baseUrl}/fonts/Ubuntu-Regular.woff2`;
+const fontUrl2 = `${baseUrl}/fonts/NotoSansSC-Medium.woff2`;
+---
+
+<script define:vars={{ fontUrl1, fontUrl2 }}>
+  document.addEventListener('astro:page-load', () => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'Ubuntu';
+        src: url('${fontUrl1}') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Noto Sans SC';
+        src: url('${fontUrl2}') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>
+<style is:global></style>
