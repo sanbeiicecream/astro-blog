@@ -52,3 +52,7 @@ export function throttle<T extends (...args: any[]) => any>(
     }
   };
 }
+
+
+export const baseUrl =
+  import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL;

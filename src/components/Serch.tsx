@@ -2,7 +2,7 @@ import Styles from '../styles/search.module.scss';
 import { useState, type SyntheticEvent, useEffect } from 'react';
 import { getCollection } from 'astro:content';
 import { createPortal } from 'react-dom';
-import { formatUrl } from '../utils/common';
+import { formatUrl, baseUrl } from '../utils/common';
 
 const allBlogPosts = await getCollection('blog');
 
@@ -68,7 +68,7 @@ export function Search() {
                 <ul className={Styles['search-dropdown']}>
                   {filterPost?.map?.(item => (
                     <li key={item.id}>
-                      <a href={item.url}>{item.title}</a>
+                      <a href={`${baseUrl}${item.url}`}>{item.title}</a>
                     </li>
                   ))}
                 </ul>
