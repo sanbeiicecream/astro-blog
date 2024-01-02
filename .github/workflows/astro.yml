@@ -57,9 +57,9 @@ jobs:
         with:
           node-version: "20"
       - name: Install dependencies
-        run: npx astro build
+        run: npm i
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Build with Astro
+      - name: 
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \
             --site "${{ steps.pages.outputs.origin }}" \
