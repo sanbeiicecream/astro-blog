@@ -16,13 +16,8 @@ type Props = Partial<CollectionEntry<'blog'>['data']> & {
 
 const { title, description, pubDate, updatedDate, heroImage, tocList } =
   Astro.props;
-const message = 'Astro is awesome!';
 ---
 
-<script define:vars={{ message }}>
-  console.log('🚀 ~ file: BlogPost.astro:31 ~ message:', message);
-  // alert(message);
-</script>
 <html lang='zh'>
   <head>
     <BaseHead title={title || ''} description={description || ''} />
