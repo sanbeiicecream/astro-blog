@@ -200,91 +200,93 @@ let formatStickyPost: {
       <section class='content-wrapper'>
         <h2>{ARCHIVE_TITLE}</h2>
         {
-          Object.keys(formatPost).map(year => {
-            return (
-              <>
-                <h2>{year}</h2>
-                <ul class='timeline'>
-                  {Object.keys(formatPost[year] || {})
-                    .sort((a, b) => +b - +a)
-                    .map(month => {
-                      formatPost[year]?.[month]?.sort(
-                        (a, b) =>
-                          b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-                      );
-                      return (
-                        <li class='timeline-wrapper'>
-                          <label class='timeline-left-icon' />
-                          <div class='timeline-content-wrapper'>
-                            <p class='timeline-right-item-top-tip'>
-                              {`${month} ${year}`}
-                              <span class='post-count'>
-                                {(formatPost[year]?.[month]?.length || 0) +
-                                  (formatStickyPost[year]?.[month]?.length ||
-                                    0)}
-                              </span>
-                            </p>
-                            {[
-                              ...(formatStickyPost?.[year]?.[month]?.sort?.(
-                                (a, b) =>
-                                  (a?.data?.sticky || 0) -
-                                  (b?.data?.sticky || 0)
-                              ) || []),
-                              ...(formatPost?.[year]?.[month] || []),
-                            ]?.map(item => {
-                              return (
-                                <div class='timeline-right-item'>
-                                  <div class='timeline-right-item-content'>
-                                    <h4>{item.data.title}</h4>
-                                    <p>{item.data.description}</p>
-                                    <>
-                                      {`${dayjs(item.data.pubDate).format(
-                                        'YYYY年MM月D日'
-                                      )} | ${Math.ceil(
-                                        Math.ceil(
-                                          getWordCount(item.body) / (5 * 60)
-                                        )
-                                      )}分钟 | ${getWordCount(item.body)}字${
-                                        item.data.updatedDate
-                                          ? ` | ${dayjs(
-                                              item.data.updatedDate
-                                            ).format('YYYY-MM-DD')}更新`
-                                          : ''
-                                      }`}
-                                    </>
-                                    <a
-                                      href={`${baseUrl}${formatUrl(item)}`}
-                                      aria-label={item.data.description}
-                                    />
-                                  </div>
-                                  {typeof item?.data?.sticky === 'number' && (
-                                    <svg
-                                      class='sticky-svg'
-                                      viewBox='0 0 1024 1024'
-                                      version='1.1'
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      p-id='5556'
-                                      width='16'
-                                      height='16'
-                                    >
-                                      <path
-                                        d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z'
-                                        fill='#000000'
-                                        p-id='5557'
+          Object.keys(formatPost)
+            .sort((a, b) => +b - +a)
+            .map(year => {
+              return (
+                <>
+                  <h2>{year}</h2>
+                  <ul class='timeline'>
+                    {Object.keys(formatPost[year] || {})
+                      .sort((a, b) => +b - +a)
+                      .map(month => {
+                        formatPost[year]?.[month]?.sort(
+                          (a, b) =>
+                            b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+                        );
+                        return (
+                          <li class='timeline-wrapper'>
+                            <label class='timeline-left-icon' />
+                            <div class='timeline-content-wrapper'>
+                              <p class='timeline-right-item-top-tip'>
+                                {`${month} ${year}`}
+                                <span class='post-count'>
+                                  {(formatPost[year]?.[month]?.length || 0) +
+                                    (formatStickyPost[year]?.[month]?.length ||
+                                      0)}
+                                </span>
+                              </p>
+                              {[
+                                ...(formatStickyPost?.[year]?.[month]?.sort?.(
+                                  (a, b) =>
+                                    (a?.data?.sticky || 0) -
+                                    (b?.data?.sticky || 0)
+                                ) || []),
+                                ...(formatPost?.[year]?.[month] || []),
+                              ]?.map(item => {
+                                return (
+                                  <div class='timeline-right-item'>
+                                    <div class='timeline-right-item-content'>
+                                      <h4>{item.data.title}</h4>
+                                      <p>{item.data.description}</p>
+                                      <>
+                                        {`${dayjs(item.data.pubDate).format(
+                                          'YYYY年MM月D日'
+                                        )} | ${Math.ceil(
+                                          Math.ceil(
+                                            getWordCount(item.body) / (5 * 60)
+                                          )
+                                        )}分钟 | ${getWordCount(item.body)}字${
+                                          item.data.updatedDate
+                                            ? ` | ${dayjs(
+                                                item.data.updatedDate
+                                              ).format('YYYY-MM-DD')}更新`
+                                            : ''
+                                        }`}
+                                      </>
+                                      <a
+                                        href={`${baseUrl}${formatUrl(item)}`}
+                                        aria-label={item.data.description}
                                       />
-                                    </svg>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </>
-            );
-          })
+                                    </div>
+                                    {typeof item?.data?.sticky === 'number' && (
+                                      <svg
+                                        class='sticky-svg'
+                                        viewBox='0 0 1024 1024'
+                                        version='1.1'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        p-id='5556'
+                                        width='16'
+                                        height='16'
+                                      >
+                                        <path
+                                          d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z'
+                                          fill='#000000'
+                                          p-id='5557'
+                                        />
+                                      </svg>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                </>
+              );
+            })
         }
       </section>
     </main>
