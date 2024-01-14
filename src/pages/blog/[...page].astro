@@ -178,7 +178,7 @@ const { page } = Astro.props as { page: Page };
       <div class='pagination'>
         {
           page.currentPage !== 1 && (
-            <a href={page.url.prev}>
+            <a href={`${baseUrl}${page.url.prev}`}>
               <button>
                 <span>pre</span>
               </button>
@@ -187,7 +187,7 @@ const { page } = Astro.props as { page: Page };
         }
         {
           page.currentPage !== page.lastPage && (
-            <a href={page.url.next}>
+            <a href={`${baseUrl}${page.url.next}`}>
               <button>
                 <span>next</span>
               </button>
