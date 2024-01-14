@@ -1,11 +1,16 @@
-<div
-  class='top'
-  onclick=`window.scroll({
-      top: 0,
-      behavior: 'smooth',
-    });`
->
-</div>
+<div class='top'></div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const top = document.querySelector('.top');
+    top?.addEventListener('click', () => {
+      window?.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+  });
+</script>
 
 <style>
   .top {

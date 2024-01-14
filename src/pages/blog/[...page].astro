@@ -2,23 +2,28 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts.ts';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { baseUrl } from '../../utils/common.ts';
+import { type Page, type GetStaticPaths } from 'astro';
 
-const stickPost: CollectionEntry<'blog'>[] = [];
-const otherPost: CollectionEntry<'blog'>[] = [];
-(await getCollection('blog')).forEach(item => {
-  if (typeof item.data.sticky === 'number') {
-    stickPost.push(item);
-  } else {
-    otherPost.push(item);
-  }
-});
-stickPost.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-otherPost.sort((a, b) => (a.data?.sticky || 0) - (b.data?.sticky || 0));
-const posts = [...stickPost, ...otherPost];
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const stickPost: CollectionEntry<'blog'>[] = [];
+  const otherPost: CollectionEntry<'blog'>[] = [];
+  (await getCollection('blog')).forEach(item => {
+    if (typeof item.data.sticky === 'number') {
+      stickPost.push(item);
+    } else {
+      otherPost.push(item);
+    }
+  });
+  stickPost.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  otherPost.sort((a, b) => (a.data?.sticky || 0) - (b.data?.sticky || 0));
+  const posts = [...stickPost, ...otherPost];
+  return paginate(posts, { pageSize: 2 });
+};
+const { page } = Astro.props as { page: Page };
 ---
 
 <!doctype html>
@@ -37,7 +42,7 @@ const posts = [...stickPost, ...otherPost];
         margin: 0;
         padding: 0;
         li {
-          width: calc(50% - 1rem);
+          width: calc(32% - 1rem);
           * {
             text-decoration: none;
             transition: 0.2s ease;
@@ -100,6 +105,31 @@ const posts = [...stickPost, ...otherPost];
           font-size: 1.563em;
         }
       }
+      .pagination {
+        margin-top: 2em;
+        text-align: right;
+        a {
+          display: inline-block;
+          text-decoration: none;
+          margin-right: 0.6em;
+        }
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 6em;
+          height: 2em;
+          line-height: 2em;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 0.8em;
+            height: 0.9em;
+          }
+        }
+      }
     </style>
   </head>
   <body>
@@ -108,7 +138,7 @@ const posts = [...stickPost, ...otherPost];
       <section>
         <ul>
           {
-            posts.map(post => (
+            page.data.map(post => (
               <li>
                 <a href={`${baseUrl}/blog/${post.slug}/`}>
                   <img
@@ -145,6 +175,28 @@ const posts = [...stickPost, ...otherPost];
           }
         </ul>
       </section>
+      <div class='pagination'>
+        {
+          page.currentPage !== 1 && (
+            <a href={page.url.prev}>
+              <button>
+                <span>pre</span>
+              </button>
+            </a>
+          )
+        }
+        {
+          page.currentPage !== page.lastPage && (
+            <a href={page.url.next}>
+              <button>
+                <span>next</span>
+              </button>
+            </a>
+          )
+        }
+
+        <span>{page.currentPage}/{page.lastPage}</span>
+      </div>
     </main>
     <Footer />
   </body>
