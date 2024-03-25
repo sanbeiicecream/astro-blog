@@ -4,7 +4,7 @@ const fontUrl1 = `${baseUrl}/fonts/Ubuntu-Regular.woff2`;
 const fontUrl2 = `${baseUrl}/fonts/NotoSansSC-Medium.woff2`;
 ---
 
-<script define:vars={{ fontUrl1, fontUrl2 }}>
+<script is:inline define:vars={{ fontUrl1, fontUrl2 }}>
   document.addEventListener('astro:page-load', () => {
     const style = document.createElement('style');
     style.textContent = `

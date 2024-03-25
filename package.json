@@ -1,7 +1,8 @@
 {
-  "name": "demo",
+  "name": "astro-blog",
   "type": "module",
   "version": "0.0.1",
+  "private": "true",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -12,7 +13,7 @@
     "debuggerCheck": "node ./node_modules/@astrojs/check/dist/bin.js"
   },
   "dependencies": {
-    "@astrojs/check": "^0.3.3",
+    "@astrojs/check": "^0.3.4",
     "@astrojs/mdx": "^2.0.1",
     "@astrojs/node": "^7.0.1",
     "@astrojs/react": "^3.0.8",
@@ -20,7 +21,7 @@
     "@astrojs/sitemap": "^3.0.3",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "astro": "^4.1.2",
+    "astro": "^4.5.9",
     "dayjs": "^1.11.10",
     "express": "^4.18.2",
     "react": "^18.2.0",

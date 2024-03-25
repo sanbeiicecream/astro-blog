@@ -9,16 +9,34 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 <html lang='zh'>
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      @font-face {
+        font-family: 'Ubuntu';
+        src: url(/fonts/Ubuntu-Regular.woff2),
+          url(/astro-blog/fonts/Ubuntu-Regular.woff2);
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Noto Sans SC';
+        src: url(/fonts/NotoSansSC-Medium.woff2),
+          url(/astro-blog/fonts/NotoSansSC-Medium.woff2);
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
   </head>
   <body>
     <Header title={SITE_TITLE} />
     <main>
       <h1>🧑‍🚀 Hello, Astronaut!</h1>
       <p>
-        Welcome to the official <a href='https://astro.build/'>Astro</a> blog
-        starter template. This template serves as a lightweight,
-        minimally-styled starting point for anyone looking to build a personal
-        website, blog, or portfolio with Astro.
+        Welcome to the official <a href='https://astro.build/'>Astro</a> blog starter
+        template. This template serves as a lightweight, minimally-styled starting
+        point for anyone looking to build a personal website, blog, or portfolio
+        with Astro.
       </p>
       <p>
         This template comes with a few integrations already configured in your

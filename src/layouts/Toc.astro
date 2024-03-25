@@ -107,7 +107,7 @@ const { navList, summary } = Astro.props;
   }
 </style>
 
-<script type='module'>
+<script is:inline type='module'>
   let tocLinkClickFlag = false;
   function isElementBelowViewport(element) {
     const rect = element.getBoundingClientRect();
