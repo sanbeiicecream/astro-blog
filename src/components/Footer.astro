@@ -32,19 +32,3 @@ const today = new Date();
     }
   }
 </style>
-
-<script>
-  import { throttle } from '../utils/common';
-  const fn = throttle(() => {
-    const top = document.querySelector('body > footer > .top');
-    if (
-      window.scrollY >
-      (document.querySelector('body > header')?.clientHeight || 100)
-    ) {
-      top?.classList.add('active');
-    } else {
-      top?.classList.remove('active');
-    }
-  }, 100);
-  window.addEventListener('scroll', fn);
-</script>
