@@ -1,14 +1,17 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
-import { baseUrl } from '../utils/common.ts';
+import type { HTMLAttributes } from 'astro/types'
+import { baseUrl } from '../utils/common.ts'
 
-type Props = HTMLAttributes<'a'>;
+type Props = HTMLAttributes<'a'>
 
-const { href, class: className, ...props } = Astro.props;
+const { href, class: className, ...props } = Astro.props
 
-const { pathname } = Astro.url;
+const { pathname } = Astro.url
 const isActive =
-  baseUrl + href === pathname || href === pathname.replace(/\/$/, '');
+  baseUrl + href === pathname ||
+  href === pathname.replace(/\/$/, '') ||
+  href === pathname + '/'
+console.log(pathname)
 ---
 
 <a

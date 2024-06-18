@@ -1,20 +1,18 @@
 ---
-import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE, SEARCH } from '../consts';
-import { Search } from './Serch';
+import HeaderLink from './HeaderLink.astro'
+import { SITE_TITLE, SEARCH } from '../consts'
+import { Search } from './Serch'
 ---
 
 <header>
   <nav>
     <div>
       <h2>
-        <HeaderLink href='/' style='border-bottom: none;'>
-          {SITE_TITLE}
-        </HeaderLink>
+        {SITE_TITLE}
       </h2>
     </div>
     <div class='social-links'>
-      <HeaderLink href='/blog/'>Blog</HeaderLink>
+      <HeaderLink href='/blog'>Blog</HeaderLink>
       <HeaderLink href='/archive/'>Archive</HeaderLink>
       <HeaderLink href='/about/'>About</HeaderLink>
       {SEARCH && <Search client:idle />}
@@ -52,7 +50,7 @@ import { Search } from './Serch';
     justify-content: space-between;
     align-items: center;
     a {
-      padding: 1em 0.5em;
+      padding: 0.6em 0.5em;
       color: var(--black);
       border-bottom: 4px solid transparent;
       text-decoration: none;
