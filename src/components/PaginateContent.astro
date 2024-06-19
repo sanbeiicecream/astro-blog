@@ -1,0 +1,278 @@
+---
+import type { Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
+import BaseHead from './BaseHead.astro'
+import Header from './Header.astro'
+import { baseUrl } from '../utils/common'
+import FormattedDate from './FormattedDate.astro'
+import Footer from './Footer.astro'
+
+type Props = {
+  page: Page<CollectionEntry<'blog'>>
+  tags: { [key: string]: number }
+}
+const { page, tags } = Astro.props
+const { pathname } = Astro.url
+console.log('aaaa', pathname)
+const regex = /(?<=\/tags\/)([^\/]+)(?=\/)/
+const currntTag = pathname?.match(regex)
+---
+
+<!doctype html>
+<html lang='zh'>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      @font-face {
+        font-family: 'Ubuntu';
+        src: url(/fonts/Ubuntu-Regular.woff2),
+          url(/astro-blog/fonts/Ubuntu-Regular.woff2);
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Noto Sans SC';
+        src: url(/fonts/NotoSansSC-Medium.woff2),
+          url(/astro-blog/fonts/NotoSansSC-Medium.woff2);
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
+    <style lang='scss'>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-left: 16%;
+        > :nth-child(1) {
+          nav {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            margin-bottom: 2em;
+            a {
+              font-size: 0.8em;
+              font-weight: bold;
+              color: #999 !important;
+              text-decoration: none;
+              color: inherit;
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              margin-right: 1em;
+              padding: 0 8px;
+            }
+            .activity {
+              color: #000 !important;
+            }
+            a:hover,
+            a:focus,
+            a:active {
+              text-decoration: none;
+              color: inherit;
+            }
+            a:hover {
+              color: #000 !important;
+            }
+          }
+        }
+        > :nth-child(2) {
+          flex-grow: 1;
+        }
+      }
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        li {
+          text-align: center;
+          width: calc(50% - 1rem);
+          margin-bottom: 1em;
+          * {
+            text-decoration: none;
+            transition: 0.2s ease;
+          }
+          img {
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+          }
+          .des {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+          }
+          a {
+            display: block;
+            text-align: left;
+            &:hover {
+              .title {
+                color: rgb(var(--theme1-color1));
+              }
+              img {
+                box-shadow: var(--box-shadow);
+              }
+
+              .sticky-svg {
+                > path {
+                  fill: var(--theme1-color1);
+                }
+              }
+            }
+            > p {
+              color: initial;
+            }
+          }
+        }
+      }
+
+      .sticky-svg {
+        font-size: 0.8em;
+        height: 1em;
+        width: 1em;
+        > path {
+          fill: #000;
+        }
+      }
+
+      .title {
+        margin: 0;
+        color: rgb(var(--black));
+        line-height: 1;
+      }
+      .date {
+        margin: 0;
+        color: rgb(var(--gray));
+      }
+      @media (max-width: 720px) {
+        ul {
+          gap: 0.5em;
+        }
+        ul li {
+          width: 100%;
+          text-align: center;
+        }
+        ul li:first-child {
+          margin-bottom: 0;
+        }
+        ul li:first-child .title {
+          font-size: 1.563em;
+        }
+      }
+      .pagination {
+        margin-top: 2em;
+        text-align: right;
+        a {
+          display: inline-block;
+          text-decoration: none;
+          margin-right: 0.6em;
+        }
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 6em;
+          height: 2em;
+          line-height: 2em;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 0.8em;
+            height: 0.9em;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section>
+        <h3>{currntTag?.[0] || 'Blog'}</h3>
+        <nav>
+          {
+            Object.keys(tags).map(key => (
+              <a
+                href={`${baseUrl}/tags/${key}/`}
+                class={currntTag?.[0] === key ? 'activity' : undefined}
+              >
+                {key}
+              </a>
+            ))
+          }
+        </nav>
+      </section>
+      <section>
+        <ul>
+          {
+            page.data.map(post => (
+              <li>
+                <a href={`${baseUrl}/blog/${post.slug}/`}>
+                  <h5 class='title'>
+                    {post.data.title}
+                    {typeof post?.data?.sticky === 'number' && (
+                      <svg
+                        class='sticky-svg'
+                        viewBox='0 0 1024 1024'
+                        version='1.1'
+                        xmlns='http://www.w3.org/2000/svg'
+                        p-id='5556'
+                        width='12'
+                        height='12'
+                      >
+                        <path
+                          d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z'
+                          p-id='5557'
+                        />
+                      </svg>
+                    )}
+                  </h5>
+                  <p class='des'>{post?.data?.description}</p>
+                  <p class='date'>
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+      <div class='pagination'>
+        {
+          page.currentPage !== 1 && (
+            <a href={`${baseUrl}${page.url.prev}`}>
+              <button>
+                <span>pre</span>
+              </button>
+            </a>
+          )
+        }
+        {
+          page.currentPage !== page.lastPage && (
+            <a href={`${baseUrl}${page.url.next}`}>
+              <button>
+                <span>next</span>
+              </button>
+            </a>
+          )
+        }
+
+        <span>{page.currentPage}/{page.lastPage}</span>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

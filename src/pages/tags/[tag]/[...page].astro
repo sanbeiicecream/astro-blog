@@ -1,13 +1,17 @@
 ---
+import { PAGESIZE } from '../../../consts.ts'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { type Page, type GetStaticPaths } from 'astro'
-import Content from '../../components/PaginateContent.astro'
-import { PAGESIZE } from '../../consts'
+import Content from '../../../components/PaginateContent.astro'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const stickPost: CollectionEntry<'blog'>[] = []
   const otherPost: CollectionEntry<'blog'>[] = []
+  const tags: { [key: string]: number } = {}
   ;(await getCollection('blog')).forEach(item => {
+    item.data.tags?.forEach(val => {
+      tags[val] ? tags[val]++ : (tags[val] = 1)
+    })
     if (typeof item.data.sticky === 'number') {
       stickPost.push(item)
     } else {
@@ -17,16 +21,17 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   stickPost.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   otherPost.sort((a, b) => (a.data?.sticky || 0) - (b.data?.sticky || 0))
   const posts = [...stickPost, ...otherPost]
-  const tags: { [key: string]: number } = {}
-  posts.forEach?.(item => {
-    item.data.tags?.forEach(val => {
-      tags[val] ? tags[val]++ : (tags[val] = 1)
+  return Object.keys(tags)?.flatMap(tag => {
+    const filteredPosts = posts.filter(post => post.data.tags?.includes(tag))
+    return paginate(filteredPosts, {
+      params: { tag },
+      pageSize: PAGESIZE || 5,
+      props: { tags },
     })
   })
-  return paginate(posts, { props: { tags: tags }, pageSize: PAGESIZE || 5 })
 }
 const { page, tags } = Astro.props as {
-  page: Page<CollectionEntry<'blog'>>
+  page: Page
   tags: { [key: string]: number }
 }
 ---

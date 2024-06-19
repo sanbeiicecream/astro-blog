@@ -1,29 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { type TocList } from '../../types/common';
+import { getCollection } from 'astro:content'
+import BlogPost from '../../layouts/BlogPost.astro'
+import { type TocList } from '../../types/common'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blog')
   return posts.map(post => ({
     params: { slug: post.slug },
     props: post,
-  }));
+  }))
 }
 
-const post = Astro.props;
-const { Content, headings } = await post.render();
-const tocList: TocList = [];
-let lastDepth = 0;
+const post = Astro.props
+const { Content, headings } = await post.render()
+const tocList: TocList = []
+let lastDepth = 0
 headings.forEach((item, index) => {
-  const currentDepth = item.depth;
+  const currentDepth = item.depth
   if (index === 0 || lastDepth >= currentDepth) {
-    tocList.push([item]);
+    tocList.push([item])
   } else {
-    tocList[tocList.length - 1]?.push(item);
+    tocList[tocList.length - 1]?.push(item)
   }
-  lastDepth = currentDepth;
-});
+  lastDepth = currentDepth
+})
 ---
 
 <BlogPost
