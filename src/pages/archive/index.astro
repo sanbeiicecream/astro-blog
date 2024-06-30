@@ -1,40 +1,40 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION, ARCHIVE_TITLE } from '../../consts';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import { SITE_TITLE, SITE_DESCRIPTION, ARCHIVE_TITLE } from '../../consts'
+import { getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
 
-import dayjs from 'dayjs';
-import { formatUrl, getWordCount, baseUrl } from '../../utils/common.ts';
+import dayjs from 'dayjs'
+import { formatUrl, getWordCount, baseUrl } from '../../utils/common.ts'
 let formatPost: {
-  [year: string]: { [month: string]: CollectionEntry<'blog'>[] };
-} = {};
+  [year: string]: { [month: string]: CollectionEntry<'blog'>[] }
+} = {}
 let formatStickyPost: {
-  [year: string]: { [month: string]: CollectionEntry<'blog'>[] };
-} = {};
-(await getCollection('blog'))?.forEach?.(item => {
-  const year = dayjs(item.data.pubDate).get('y');
-  const month = dayjs(item.data.pubDate).get('M') + 1;
+  [year: string]: { [month: string]: CollectionEntry<'blog'>[] }
+} = {}
+;(await getCollection('blog'))?.forEach?.(item => {
+  const year = dayjs(item.data.pubDate).get('y')
+  const month = dayjs(item.data.pubDate).get('M') + 1
   if (!formatPost[year]) {
-    formatPost[year] = {};
+    formatPost[year] = {}
   }
   if (!Array.isArray(formatPost[year]?.[month])) {
-    formatPost[year]![month] = [];
+    formatPost[year]![month] = []
   }
   if (typeof item.data.sticky === 'number') {
     if (!formatStickyPost[year]) {
-      formatStickyPost[year] = {};
+      formatStickyPost[year] = {}
     }
     if (!Array.isArray(formatStickyPost[year]?.[month])) {
-      formatStickyPost[year]![month] = [];
+      formatStickyPost[year]![month] = []
     }
-    formatStickyPost[year]![month]?.push(item);
+    formatStickyPost[year]![month]?.push(item)
   } else {
-    formatPost[year]![month]?.push(item);
+    formatPost[year]![month]?.push(item)
   }
-});
+})
 ---
 
 <!doctype html>
@@ -73,7 +73,6 @@ let formatStickyPost: {
       }
       .content-wrapper {
         max-width: 68%;
-        margin: 0 auto;
       }
       ul {
         list-style: none;
@@ -81,7 +80,12 @@ let formatStickyPost: {
         padding: 0;
       }
       main {
-        padding: 2em 1em;
+        padding-top: 3em;
+        padding-left: 16%;
+
+        section:nth-child(1) {
+          margin-bottom: 2em;
+        }
       }
 
       /* Styling */
@@ -141,8 +145,7 @@ let formatStickyPost: {
           position: relative;
           > .timeline-right-item-content {
             position: relative;
-            padding: 1em 0;
-            margin-bottom: 1em;
+            padding: 0.5em 0;
             transition: background-color 0.2s ease-in;
 
             > span {
@@ -215,15 +218,17 @@ let formatStickyPost: {
   <body>
     <Header />
     <main>
+      <section>
+        <h3>{ARCHIVE_TITLE}</h3>
+      </section>
       <section class='content-wrapper'>
-        <h2>{ARCHIVE_TITLE}</h2>
         {
           Object.keys(formatPost)
             .sort((a, b) => +b - +a)
             .map(year => {
               return (
                 <>
-                  <h2>{year}</h2>
+                  <h4>{year}</h4>
                   <ul class='timeline'>
                     {Object.keys(formatPost[year] || {})
                       .sort((a, b) => +b - +a)
@@ -231,7 +236,7 @@ let formatStickyPost: {
                         formatPost[year]?.[month]?.sort(
                           (a, b) =>
                             b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-                        );
+                        )
                         return (
                           <li class='timeline-wrapper'>
                             <label class='timeline-left-icon' />
@@ -295,15 +300,15 @@ let formatStickyPost: {
                                       </svg>
                                     )}
                                   </div>
-                                );
+                                )
                               })}
                             </div>
                           </li>
-                        );
+                        )
                       })}
                   </ul>
                 </>
-              );
+              )
             })
         }
       </section>

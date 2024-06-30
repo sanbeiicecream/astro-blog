@@ -171,28 +171,14 @@ const currntTag = pathname?.match(regex)
         }
       }
       .pagination {
+        display: flex;
+        justify-content: flex-end;
         margin-top: 2em;
-        text-align: right;
         a {
-          display: inline-block;
-          text-decoration: none;
-          margin-right: 0.6em;
-        }
-        button {
           display: flex;
           align-items: center;
-          justify-content: center;
-          width: 6em;
-          height: 2em;
-          line-height: 2em;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          span {
-            display: inline-block;
-            vertical-align: middle;
-            line-height: 0.8em;
-            height: 0.9em;
-          }
+          text-decoration: none;
+          margin-right: 0.2em;
         }
       }
     </style>
@@ -226,17 +212,13 @@ const currntTag = pathname?.match(regex)
                     {typeof post?.data?.sticky === 'number' && (
                       <svg
                         class='sticky-svg'
-                        viewBox='0 0 1024 1024'
+                        viewBox='0 0 1024 512'
                         version='1.1'
                         xmlns='http://www.w3.org/2000/svg'
-                        p-id='5556'
                         width='12'
                         height='12'
                       >
-                        <path
-                          d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z'
-                          p-id='5557'
-                        />
+                        <path d='M256 74.666667a53.333333 53.333333 0 1 0 0 106.666666h512a53.333333 53.333333 0 1 0 0-106.666666H256zM549.717333 260.949333a53.333333 53.333333 0 0 0-75.434666 0l-256 256a53.333333 53.333333 0 0 0 75.434666 75.434667l165.12-165.12V896a53.333333 53.333333 0 1 0 106.666667 0V427.605333l164.778667 164.778667a53.333333 53.333333 0 0 0 75.434666-75.434667l-256-256z' />
                       </svg>
                     )}
                   </h5>
@@ -254,18 +236,30 @@ const currntTag = pathname?.match(regex)
         {
           page.currentPage !== 1 && (
             <a href={`${baseUrl}${page.url.prev}`}>
-              <button>
-                <span>pre</span>
-              </button>
+              <svg
+                viewBox='0 0 1024 1024'
+                version='1.1'
+                xmlns='http://www.w3.org/2000/svg'
+                width='28'
+                height='28'
+              >
+                <path d='M417.706667 490.666667L682.666667 751.957333 623.146667 810.666667 298.666667 490.666667 623.146667 170.666667 682.666667 229.376z' />
+              </svg>
             </a>
           )
         }
         {
           page.currentPage !== page.lastPage && (
             <a href={`${baseUrl}${page.url.next}`}>
-              <button>
-                <span>next</span>
-              </button>
+              <svg
+                viewBox='0 0 1024 1024'
+                version='1.1'
+                xmlns='http://www.w3.org/2000/svg'
+                width='28'
+                height='28'
+              >
+                <path d='M563.626667 490.666667L298.666667 229.376 358.186667 170.666667 682.666667 490.666667 358.186667 810.666667 298.666667 751.957333z' />
+              </svg>
             </a>
           )
         }
