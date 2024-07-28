@@ -1,12 +1,12 @@
 ---
-import { type TocList } from '../types/common';
+import { type TocList } from '../types/common'
 type Props = Partial<{
-  navList: TocList | undefined;
-  slug: string | undefined;
-  collection: string | undefined;
-  summary: string | undefined;
-}>;
-const { navList, summary } = Astro.props;
+  navList: TocList | undefined
+  slug: string | undefined
+  collection: string | undefined
+  summary: string | undefined
+}>
+const { navList, summary } = Astro.props
 ---
 
 {
@@ -72,6 +72,7 @@ const { navList, summary } = Astro.props;
           user-select: none;
         }
         .toc-link-wrapper {
+          overscroll-behavior-y: contain;
           height: calc(100vh - var(--header-height) - var(--footer-height));
           max-width: var(--toc-width);
           overflow: auto;
@@ -108,67 +109,67 @@ const { navList, summary } = Astro.props;
 </style>
 
 <script is:inline type='module'>
-  let tocLinkClickFlag = false;
+  let tocLinkClickFlag = false
   function isElementBelowViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return rect.bottom > window.innerHeight;
+    const rect = element.getBoundingClientRect()
+    return rect.bottom > window.innerHeight
   }
   window.onscroll = () => {
-    const tocLinkUL = document.querySelector('.toc-link-wrapper');
+    const tocLinkUL = document.querySelector('.toc-link-wrapper')
     const headings = document.querySelectorAll(
       'h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'
-    );
+    )
     // toc项太多或者页面没有toc就移除滚动事件
     if (!tocLinkUL || headings.length > 1000) {
-      window.onscroll = null;
+      window.onscroll = null
     }
     if (tocLinkClickFlag) {
-      tocLinkClickFlag = false;
-      return;
+      tocLinkClickFlag = false
+      return
     }
-    let fromTop = window.scrollY;
-    let topHandingFlag = false;
-    let currentToc;
+    let fromTop = window.scrollY
+    let topHandingFlag = false
+    let currentToc
     Array.from(headings)
       .reverse()
       .forEach((heading, index) => {
         if (topHandingFlag) {
-          return;
+          return
         }
-        const section = document.getElementById(heading.id);
+        const section = document.getElementById(heading.id)
         if (section?.offsetTop && section?.offsetTop <= fromTop + 80) {
-          topHandingFlag = true;
+          topHandingFlag = true
           document.querySelectorAll('.toc-link-wrapper a').forEach(link => {
-            link.classList.remove('active');
-          });
+            link.classList.remove('active')
+          })
           currentToc = document.querySelector(
             `.toc-link-wrapper [data-link=${heading.id}]`
-          );
-          const tocLinkULHeight = tocLinkUL.getBoundingClientRect().height;
-          const tocLInkULScrollTop = tocLinkUL.scrollTop;
-          const currentTocTop = currentToc.offsetTop;
+          )
+          const tocLinkULHeight = tocLinkUL.getBoundingClientRect().height
+          const tocLInkULScrollTop = tocLinkUL.scrollTop
+          const currentTocTop = currentToc.offsetTop
           if (
             currentTocTop > tocLinkULHeight + tocLInkULScrollTop ||
             currentTocTop < tocLinkULHeight
           ) {
             tocLinkUL.scrollTop =
-              currentTocTop - tocLinkULHeight + tocLinkULHeight / 2;
+              currentTocTop - tocLinkULHeight + tocLinkULHeight / 2
           }
-          currentToc?.classList.add('active');
+          currentToc?.classList.add('active')
         }
-      });
-    topHandingFlag = true;
-  };
-  const tocLinkUL = document.querySelector('.toc-link-wrapper');
+      })
+    topHandingFlag = true
+  }
+  const tocLinkUL = document.querySelector('.toc-link-wrapper')
   if (tocLinkUL) {
     tocLinkUL.onclick = event => {
-      tocLinkClickFlag = true;
+      tocLinkClickFlag = true
       if (event.target instanceof HTMLElement) {
         document.querySelectorAll('[data-link]')?.forEach?.(item => {
-          item?.classList?.remove('active');
-        });
-        event.target?.classList?.add?.('active');
+          item?.classList?.remove('active')
+        })
+        event.target?.classList?.add?.('active')
       }
-    };
+    }
   }
 </script>
