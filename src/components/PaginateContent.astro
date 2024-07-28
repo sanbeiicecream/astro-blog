@@ -14,7 +14,6 @@ type Props = {
 }
 const { page, tags } = Astro.props
 const { pathname } = Astro.url
-console.log('aaaa', pathname)
 const regex = /(?<=\/tags\/)([^\/]+)(?=\/)/
 const currntTag = pathname?.match(regex)
 ---
