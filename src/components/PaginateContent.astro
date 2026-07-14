@@ -216,7 +216,7 @@ const currntTag = pathname?.match(regex)
       <div class='pagination'>
         {
           page.currentPage !== 1 && (
-            <a href={`${baseUrl}${page.url.prev}`}>
+            <a href={page.url.prev}>
               <svg
                 viewBox='0 0 1024 1024'
                 version='1.1'
@@ -231,7 +231,7 @@ const currntTag = pathname?.match(regex)
         }
         {
           page.currentPage !== page.lastPage && (
-            <a href={`${baseUrl}${page.url.next}`}>
+            <a href={page.url.next}>
               <svg
                 viewBox='0 0 1024 1024'
                 version='1.1'
