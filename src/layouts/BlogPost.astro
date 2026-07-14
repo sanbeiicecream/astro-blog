@@ -1,44 +1,27 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import { type TocList } from '../types/common';
-import { baseUrl } from '../utils/common.ts';
-import Toc from './Toc.astro';
+import type { CollectionEntry } from 'astro:content'
+import BaseHead from '../components/BaseHead.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import FormattedDate from '../components/FormattedDate.astro'
+import { type TocList } from '../types/common'
+import { baseUrl } from '../utils/common.ts'
+import Toc from './Toc.astro'
 
 type Props = Partial<CollectionEntry<'blog'>['data']> & {
-  tocList?: TocList;
-  slug?: string;
-  collection?: string;
-};
+  tocList?: TocList
+  slug?: string
+  collection?: string
+}
 
 const { title, description, pubDate, updatedDate, heroImage, tocList } =
-  Astro.props;
+  Astro.props
 ---
 
 <html lang='zh'>
   <head>
     <BaseHead title={title || ''} description={description || ''} />
-    <style>
-      @font-face {
-        font-family: 'Ubuntu';
-        src: url(/fonts/Ubuntu-Regular.woff2),
-          url(/astro-blog/fonts/Ubuntu-Regular.woff2);
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Noto Sans SC';
-        src: url(/fonts/NotoSansSC-Medium.woff2),
-          url(/astro-blog/fonts/NotoSansSC-Medium.woff2);
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-    </style>
+
     <style lang='scss'>
       body {
         box-sizing: border-box;
@@ -100,12 +83,7 @@ const { title, description, pubDate, updatedDate, heroImage, tocList } =
         <div class='hero-image'>
           {
             heroImage && (
-              <img
-                width={1020}
-                height={510}
-                src={`${baseUrl}${heroImage}`}
-                alt=''
-              />
+              <img width={1020} height={510} src={`${heroImage.src}`} alt='' />
             )
           }
         </div>

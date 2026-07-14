@@ -41,24 +41,6 @@ let formatStickyPost: {
 <html lang='zh'>
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style>
-      @font-face {
-        font-family: 'Ubuntu';
-        src: url(/fonts/Ubuntu-Regular.woff2),
-          url(/astro-blog/fonts/Ubuntu-Regular.woff2);
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: 'Noto Sans SC';
-        src: url(/fonts/NotoSansSC-Medium.woff2),
-          url(/astro-blog/fonts/NotoSansSC-Medium.woff2);
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-    </style>
     <style lang='scss'>
       /* Variables */
       $color-1: black;
@@ -146,7 +128,7 @@ let formatStickyPost: {
             position: relative;
             padding: 0.5em 0;
             transition: background-color 0.2s ease-in;
-
+            // border-bottom: transparent 2px solid;
             > span {
               display: flex;
               align-items: center;
@@ -234,7 +216,7 @@ let formatStickyPost: {
                       .map(month => {
                         formatPost[year]?.[month]?.sort(
                           (a, b) =>
-                            b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+                            b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
                         )
                         return (
                           <li class='timeline-wrapper'>
@@ -252,7 +234,7 @@ let formatStickyPost: {
                                 ...(formatStickyPost?.[year]?.[month]?.sort?.(
                                   (a, b) =>
                                     (a?.data?.sticky || 0) -
-                                    (b?.data?.sticky || 0)
+                                    (b?.data?.sticky || 0),
                                 ) || []),
                                 ...(formatPost?.[year]?.[month] || []),
                               ]?.map(item => {
@@ -263,15 +245,15 @@ let formatStickyPost: {
                                       <p>{item.data.description}</p>
                                       <>
                                         {`${dayjs(item.data.pubDate).format(
-                                          'YYYY年MM月D日'
+                                          'YYYY年MM月D日',
                                         )} | ${Math.ceil(
                                           Math.ceil(
-                                            getWordCount(item.body) / (5 * 60)
-                                          )
+                                            getWordCount(item?.body) / (5 * 60),
+                                          ),
                                         )}分钟 | ${getWordCount(item.body)}字${
                                           item.data.updatedDate
                                             ? ` | ${dayjs(
-                                                item.data.updatedDate
+                                                item.data.updatedDate,
                                               ).format('YYYY-MM-DD')}更新`
                                             : ''
                                         }`}

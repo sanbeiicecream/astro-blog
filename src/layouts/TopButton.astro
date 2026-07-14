@@ -1,28 +1,29 @@
 <div class='top'></div>
 
 <script>
-  import { throttle } from '../utils/common';
+  import { throttle } from '../utils/common.ts'
   document.addEventListener('astro:page-load', () => {
-    const top = document.querySelector('.top');
+    const top = document.querySelector('.top')
     top?.addEventListener('click', () => {
       window?.scrollTo({
         top: 0,
         behavior: 'smooth',
-      });
-    });
+      })
+    })
+
     const fn = throttle(() => {
-      const top = document.querySelector('body > footer > .top');
+      const top = document.querySelector('body > footer > .top')
       if (
         window.scrollY >
         (document.querySelector('body > header')?.clientHeight || 100)
       ) {
-        top?.classList.add('active');
+        top?.classList.add('active')
       } else {
-        top?.classList.remove('active');
+        top?.classList.remove('active')
       }
-    }, 10);
-    window.addEventListener('scroll', fn);
-  });
+    }, 10)
+    window.addEventListener('scroll', fn)
+  })
 </script>
 
 <style>

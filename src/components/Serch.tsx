@@ -1,48 +1,49 @@
-import Styles from '../styles/search.module.scss';
-import { useState, type SyntheticEvent, useEffect } from 'react';
-import { getCollection } from 'astro:content';
-import { createPortal } from 'react-dom';
-import { formatUrl, baseUrl } from '../utils/common';
+import Styles from '../styles/search.module.scss'
+import { useState, type SyntheticEvent, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import { formatUrl, baseUrl } from '../utils/common'
+import type { CollectionEntry } from 'astro:content'
+interface Props {
+  posts: CollectionEntry<'blog'>[]
+}
 
-const allBlogPosts = await getCollection('blog');
-
-export function Search() {
-  const [visible, setVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+export function Search({ posts }: Props) {
+  const [visible, setVisible] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
   const [filterPost, setfilterPost] =
-    useState<{ url: string; title: string; id: string }[]>();
-  const [popupContainer, setPopupContainer] = useState<HTMLElement>();
+    useState<{ url: string; title: string; id: string }[]>()
+  const [popupContainer, setPopupContainer] = useState<HTMLElement>()
 
   useEffect(() => {
-    setPopupContainer(window.document.body);
-  }, []);
+    setPopupContainer(window.document.body)
+  }, [])
   const changeInput = (ele: SyntheticEvent) => {
-    const value = (ele.currentTarget as HTMLInputElement).value;
-    setSearchValue(value);
+    const value = (ele.currentTarget as HTMLInputElement).value
+    setSearchValue(value)
     if (!value) {
-      setfilterPost([]);
-      return;
+      setfilterPost([])
+      return
     }
-    const findPost = allBlogPosts
+    const findPost = posts
       ?.filter?.(
-        item => item.body.includes(value) || item.data.title.includes(value)
+        item => item.body?.includes(value) || item.data.title.includes(value),
       )
       .map(item => ({
         url: formatUrl(item),
         title: item.data.title,
         id: item.id,
-      }));
-    setfilterPost(findPost);
-  };
+      }))
+    setfilterPost(findPost)
+  }
   const clickSearch = () => {
-    popupContainer?.classList?.add('search-active');
-    setVisible(!visible);
-  };
+    popupContainer?.classList?.add('search-active')
+    setVisible(!visible)
+  }
   const closeSearch = () => {
-    popupContainer?.classList?.remove('search-active');
-    setVisible(false);
-    setfilterPost([]);
-  };
+    popupContainer?.classList?.remove('search-active')
+    setVisible(false)
+    setfilterPost([])
+  }
 
   return (
     <>
@@ -56,7 +57,7 @@ export function Search() {
               <div
                 className={Styles['search-modal']}
                 onClick={e => {
-                  e.stopPropagation();
+                  e.stopPropagation()
                 }}
               >
                 <header className={Styles['search-searchBar']}>
@@ -71,7 +72,7 @@ export function Search() {
                 </header>
                 <ul className={Styles['search-dropdown']}>
                   {filterPost?.map?.(item => {
-                    const index = item.title.indexOf(searchValue);
+                    const index = item.title.indexOf(searchValue)
                     const title =
                       index >= 0 ? (
                         <span>
@@ -81,19 +82,19 @@ export function Search() {
                         </span>
                       ) : (
                         item.title
-                      );
+                      )
                     return (
                       <li key={item.id}>
                         <a href={`${baseUrl}${item.url}`}>{title}</a>
                       </li>
-                    );
+                    )
                   })}
                 </ul>
               </div>
             </div>
           ),
-          popupContainer
+          popupContainer,
         )}
     </>
-  );
+  )
 }
