@@ -1,12 +1,13 @@
 import Styles from '../styles/search.module.scss'
 import { useState, type SyntheticEvent, useEffect } from 'react'
-import { getCollection } from 'astro:content'
 import { createPortal } from 'react-dom'
 import { formatUrl, baseUrl } from '../utils/common'
+import type { CollectionEntry } from 'astro:content'
+interface Props {
+  posts: CollectionEntry<'blog'>[]
+}
 
-const allBlogPosts = await getCollection('blog')
-
-export function Search() {
+export function Search({ posts }: Props) {
   const [visible, setVisible] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [filterPost, setfilterPost] =
@@ -23,7 +24,7 @@ export function Search() {
       setfilterPost([])
       return
     }
-    const findPost = allBlogPosts
+    const findPost = posts
       ?.filter?.(
         item => item.body?.includes(value) || item.data.title.includes(value),
       )
