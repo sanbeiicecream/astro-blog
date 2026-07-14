@@ -2,20 +2,21 @@
 import { getCollection } from 'astro:content'
 import BlogPost from '../../layouts/BlogPost.astro'
 import { type TocList } from '../../types/common'
+import { render } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: post.id || '' },
     props: post,
   }))
 }
 
 const post = Astro.props
-const { Content, headings } = await post.render()
+const { Content, headings } = await render(post)
 const tocList: TocList = []
 let lastDepth = 0
-headings.forEach((item, index) => {
+headings?.forEach?.((item, index) => {
   const currentDepth = item.depth
   if (index === 0 || lastDepth >= currentDepth) {
     tocList.push([item])
@@ -29,7 +30,7 @@ headings.forEach((item, index) => {
 <BlogPost
   {...post.data}
   tocList={tocList}
-  slug={post.slug}
+  slug={post.id}
   collection={post.collection}
 >
   <Content />

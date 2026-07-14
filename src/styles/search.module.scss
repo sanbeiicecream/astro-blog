@@ -7,7 +7,7 @@
   --search-modal-width: 560px;
   --search-modal-background: hsl(273, 37%, 93%);
   --search-spacing: 12px;
-  --serach-item-height: 56px;
+  --search-item-height: 56px;
   box-sizing: border-box;
   height: 100vh;
   width: 100vw;
@@ -98,10 +98,8 @@
   }
 }
 
-:global {
-  .search-active {
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-  }
+.search-active {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }

@@ -1,2 +1,2 @@
-import { type MarkdownHeading } from 'astro';
+import { type MarkdownHeading } from 'astro'
 export type TocList = MarkdownHeading[][]
